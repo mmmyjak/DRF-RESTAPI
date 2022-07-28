@@ -5,11 +5,16 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
-            "id",
             "name"
         )
 
 class ThingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Things
-        fields = '__all__'
+        fields = (
+            "name",
+            "importance",
+            "created",
+            "deadline",
+            "category_name",
+        )

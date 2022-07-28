@@ -13,7 +13,7 @@ class Category(models.Model):
 
 
 class Things(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=5)
     name = models.CharField(max_length=100)
     importance = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
@@ -25,4 +25,5 @@ class Things(models.Model):
     def __str__(self):
         return self.name
 
-
+    def category_name(self):
+        return self.category.name
