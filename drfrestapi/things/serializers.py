@@ -16,5 +16,6 @@ class ThingsSerializer(serializers.ModelSerializer):
             "importance",
             "created",
             "deadline",
+            "category",
             "category_name",
         )
