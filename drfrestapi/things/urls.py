@@ -1,17 +1,13 @@
 from django.urls import path, include
 from things import views
-from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
+
+
+router = DefaultRouter()
+router.register(r'things', views.ThingsViewSet, basename="things")
+router.register(r'users', views.UserViewSet, basename="users")
+router.register(r'categories', views.CategoryViewSet, basename="categories")
 
 urlpatterns = [
-    path('things/', views.ThingsList.as_view()),
-    path('things/<int:pk>/', views.ThingsDetail.as_view()),
-    # path('things/<str:cat>/', views.CategoryList.as_view()),
-    path('users/', views.UserList.as_view()),
-    path('users/<int:pk>/', views.UserDetail.as_view()),
-]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
-
-urlpatterns += [
-    path('api-auth/', include('rest_framework.urls')),
+    path('', include(router.urls)),
 ]

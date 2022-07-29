@@ -14,7 +14,7 @@ class Category(models.Model):
 
 
 class Things(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=5)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='things')
     name = models.CharField(max_length=100)
     importance = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)

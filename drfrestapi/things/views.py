@@ -1,34 +1,51 @@
 from .models import Category, Things
-from .serializers import ThingsSerializer, UserSerializer
+from .serializers import ThingsSerializer, UserSerializer, CategorySerializer
 # from django.http import Http404
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 # from rest_framework import status
 # from rest_framework import mixins
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 from django.contrib.auth.models import User
 from .permissions import IsOwnerOrReadOnly
 
-class ThingsList(generics.ListCreateAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class ThingsViewSet(viewsets.ModelViewSet):
     queryset = Things.objects.all()
     serializer_class = ThingsSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class ThingsDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Things.objects.all()
-    serializer_class = ThingsSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+# class ThingsList(generics.ListCreateAPIView):
+#     queryset = Things.objects.all()
+#     serializer_class = ThingsSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
+
+# class ThingsDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Things.objects.all()
+#     serializer_class = ThingsSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+# class UserList(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+
+# class UserDetail(generics.RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 # --------------- MIXINS --------------------------
 # class ThingsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
