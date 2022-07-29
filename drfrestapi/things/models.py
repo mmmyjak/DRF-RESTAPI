@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 
 # Create your models here.
@@ -18,6 +19,7 @@ class Things(models.Model):
     importance = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(blank=True)
+    owner = models.ForeignKey('auth.User', related_name='things', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['deadline']
