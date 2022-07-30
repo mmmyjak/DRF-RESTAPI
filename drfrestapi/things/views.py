@@ -1,5 +1,5 @@
-from .models import Category, Things
-from .serializers import ThingsSerializer, UserSerializer, CategorySerializer
+from .models import Category, Thing
+from .serializers import ThingSerializer, UserSerializer, CategorySerializer
 # from django.http import Http404
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
@@ -13,29 +13,26 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class ThingsViewSet(viewsets.ModelViewSet):
-    queryset = Things.objects.all()
-    serializer_class = ThingsSerializer
+class ThingViewSet(viewsets.ModelViewSet):
+    queryset = Thing.objects.all().filter(done=False)
+    serializer_class = ThingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+class DoneThingViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Thing.objects.all().filter(done=True)
+    serializer_class = ThingSerializer
+
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-# class ThingsList(generics.ListCreateAPIView):
-#     queryset = Things.objects.all()
-#     serializer_class = ThingsSerializer
-#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-
-# class ThingsDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Things.objects.all()
-#     serializer_class = ThingsSerializer
+# class ThingDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Thing.objects.all()
+#     serializer_class = ThingSerializer
 #     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
 # class UserList(generics.ListAPIView):

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Things
+from .models import Category, Thing
 from django.contrib.auth.models import User
 
 
@@ -14,19 +14,22 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'things']
 
-class ThingsSerializer(serializers.ModelSerializer):
+class ThingSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    url = serializers.HyperlinkedIdentityField(view_name="things-detail")
     class Meta:
-        model = Things
+        model = Thing
         fields = (
-            "url",
+            "id",
             "name",
             "importance",
             "created",
             "deadline",
             "category",
             "category_name",
-            "owner"
+            "owner",
+            "done",
+            "url"
         )
 
 class UserSerializer(serializers.ModelSerializer):
